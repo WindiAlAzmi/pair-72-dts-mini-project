@@ -1,13 +1,14 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.logoImage, .logoImage img{
+   width: 38px;
+  height: 38px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.appbar {
+  background-color:#141414;
+   height: 72px;
+  padding: 0px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color:white;
 }
