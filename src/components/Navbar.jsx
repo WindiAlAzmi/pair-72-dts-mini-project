@@ -13,15 +13,29 @@ import MenuItem from "@mui/material/MenuItem";
 import { IconButton} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import { Link, useNavigate } from 'react-router-dom';
+
+//firebase
+import { useAuthState } from "react-firebase-hooks/auth";
+import { signOut } from 'firebase/auth';
+import { auth } from "../config/firebase";
 
 
 import images from '../images/imageProfile.png'
 import kado from "../images/kado.png";
 
 const pages = ["Home", "Series", "Movies", "New and Popular", "My List"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Logout"];
+const settingLogin= ["Login"];
+
 
 const Navbar = () => {
+
+  const [user] = useAuthState(auth);
+
+  const navigate = useNavigate();
+
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -39,6 +53,19 @@ const Navbar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+    const handleLogout = async () => {
+        try {
+            await signOut(auth);
+            navigate("/");
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const handleLogin = async () => {
+       navigate('/login')
+    };
 
   return (
     <div position="static" className="appbar">
@@ -104,6 +131,8 @@ const Navbar = () => {
             ))}
           </Box>
 
+          { user ? 
+
           <Box sx={{ flexGrow: 0 }}>
             <Menu
               sx={{ mt: "45px" }}
@@ -121,11 +150,15 @@ const Navbar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map(setting => (
+              {
+                settings.map(setting => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                  <Typography textAlign="center" onClick={handleLogout}>{setting}</Typography>
                 </MenuItem>
-              ))}
+              ))
+              }
+
+
             </Menu>
             <IconButton size="large" aria-label="search" color="inherit">
               <SearchIcon />
@@ -139,7 +172,13 @@ const Navbar = () => {
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
-          </Box>
+          </Box> :
+
+          <Button onClick={handleLogin} sx={{ my: 2, color: "white", display: "block" }}>
+               Login
+              </Button> 
+
+          }
         </Toolbar>
       </Container>
     </div>
